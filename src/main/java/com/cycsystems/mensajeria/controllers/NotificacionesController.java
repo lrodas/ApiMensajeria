@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cycsystems.mensajeria.dto.input.MensajeRequest;
 import com.cycsystems.mensajeria.dto.output.MensajeResponse;
@@ -25,6 +22,7 @@ import com.cycsystems.mensajeria.services.impl.SMSServiceImpl;
 
 @RestController
 @RequestMapping("/api/v1/notifications")
+@CrossOrigin(origins = {"https://cycsystemsgt.com", "http://localhost:80"})
 public class NotificacionesController {
 
 	@Autowired
@@ -56,7 +54,7 @@ public class NotificacionesController {
 	
 	@Async
 	@PostMapping("/sendMail")
-	private AsyncResult<ResponseEntity<?>> enviarCorreo(@RequestBody MensajeRequest mensajeRequest) {
+	public AsyncResult<ResponseEntity<?>> enviarCorreo(@RequestBody MensajeRequest mensajeRequest) {
 	
 		MensajeResponse mensajeResponse = new MensajeResponse();
 		
@@ -95,9 +93,9 @@ public class NotificacionesController {
 	
 	@Async
 	@PostMapping("/sendSMS")
-	private AsyncResult<ResponseEntity<?>> enviarSMS(@RequestBody MensajeRequest mensajeRequest) {
+	public AsyncResult<ResponseEntity<?>> enviarSMS(@RequestBody MensajeRequest mensajeRequest) {
 		
-MensajeResponse mensajeResponse = new MensajeResponse();
+		MensajeResponse mensajeResponse = new MensajeResponse();
 		
 		Empresa empresa = this.empresaService.findByToken(mensajeRequest.getToken());
 		if (empresa != null) {
